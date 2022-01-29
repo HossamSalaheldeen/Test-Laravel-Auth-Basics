@@ -34,6 +34,7 @@ class AuthenticationTest extends TestCase
     public function test_profile_link_is_invisible_in_public()
     {
         $response = $this->get('/');
+
         $this->assertStringNotContainsString('href="/profile"', $response->getContent());
 
         $user = User::factory()->create();
@@ -58,10 +59,10 @@ class AuthenticationTest extends TestCase
         ];
         $this->actingAs($user)->put('/profile', $newData);
         $this->assertDatabaseHas('users', $newData);
-
+//        dd($user);
         // Check if the user is still able to log in - password unchanged
         $this->assertTrue(Auth::attempt([
-            'email' => $user->email,
+            'email' => 'new@email.com',
             'password' => 'password'
         ]));
     }
@@ -79,7 +80,7 @@ class AuthenticationTest extends TestCase
 
         // Check if the user is able to log in with the new password
         $this->assertTrue(Auth::attempt([
-            'email' => $user->email,
+            'email' => 'new@email.com',
             'password' => 'newpassword'
         ]));
     }
